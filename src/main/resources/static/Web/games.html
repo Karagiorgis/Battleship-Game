@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Salvo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div id="app">
+    <div class="image">
+
+      <div v-if="page == 'login' && user == false" class="login-page">
+        <div class="box1">
+          <div class="account">
+            <div class="top"><img @click="page = 'register', userName = '', password = '',error = ''" src="images/cloud.png" alt="cloud" class="cloud"></div>
+            <div><img class="soldier" src="images/soldier.png" alt="soldier"></div>
+          </div>
+          <div class="sign-in">
+            <div class="login-box">
+              <div><img src="images/logo.png" alt="logo"></div>
+              <div>
+                <h2 class="title">Battleship Game</h2>
+                <input class="error" v-model="error">
+              </div>
+              <form id="login-form" onsubmit="return false">
+
+                <div class="text"><span>USERNAME:</span><input type="text" name="username" v-model="userName"></div>
+                <div class="text"><span>PASSWORD:</span><input type="password" name="password" v-model="password"></div>
+                <div><button id="login" @click="login()">Login</button></div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="page == 'register'" class="register-page">
+        <div class="create-box">
+          <div class="box2">
+            <div><img src="images/logo.png" alt="logo" @click="page = 'login',userName = '', password = '', error = ''"></div>
+            <div>
+              <h2 class="title">Battleship Game</h2>
+            </div>
+            <div>
+              <p class="sub-title">Please fill the information</p>
+              <input class="error" v-model="error">
+            </div>
+            <form id="create-form" onsubmit="return false">
+              <div class="text"><span>USERNAME:</span><input type="text" name="username" v-model="userName"></div>
+              <div class="text"><span>PASSWORD:</span><input type="password" name="password" v-model="password"></div>
+            </form>
+          </div>
+          <div class="box3">
+            <div><span>Choose player:</span></div>
+            <div class="player-box">
+              <img src="images/soldier.png" alt="soldier" id="player" :class="{ active : active_el == 1 }" @click="activate(1)">
+              <img src="images/soldier2.png" alt="soldier" id="player2" :class="{ active : active_el == 2 }" @click="activate(2)">
+              <img src="images/soldier3.png" alt="soldier" id="player3" :class="{ active : active_el == 3 }" @click="activate(3)">
+            </div>
+            <div><button id="createAcc" @click="createAcc()">Create new account</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="page == 'home' && user == true" class="home">
+
+        <div class="home-header">
+          <div>
+            <h1>Salvo Game</h1>
+          </div>
+
+          <div class="header-bottom">
+            <div class="log-out">
+              <p>Logged in as: {{userName}}</p>
+              <button @click="logout()" id="logout">logout</button>
+            </div>
+            <div class="leaderboard">
+
+              <h2>Salvo LeaderBoard</h2>
+
+              <table id="board">
+                <th>Name</th>
+                <th>Total</th>
+                <th>Won</th>
+                <th>Lost</th>
+                <th>Tied</th>
+                <tr v-for="(value, key) in board">
+                  <td>{{value.player}}</td>
+                  <td>{{value.points}}</td>
+                  <td>{{value.win}}</td>
+                  <td>{{value.lose}}</td>
+                  <td>{{value.tie}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="home-body">
+          <div class="game-table">
+            <div>
+              <button class="create-game" @click="createGame();">Create new Game</button>
+            </div>
+            <table id="myList">
+              <th>Game Id</th>
+              <th>Date created</th>
+              <th>User1</th>
+              <th>User2</th>
+              <tr v-for="(value,key) in games">
+                <td>{{value.gameId}}</td>
+                <td>{{value.dateCreated}}</td>
+                <td>{{value.user1}}</td>
+                <td>{{value.user2}}</td>
+                <td v-if="value.user2 == 'waiting for player'" class="join-game"><button class="join-btn" :value="value.gameId" @click="joinGame($event);">Join</button></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="games.js"></script>
+</body>
+
+</html>
