@@ -165,6 +165,13 @@ public class SalvoController {
                 }else{
                     map.put("gameStatus", "start");
                 }
+
+                if(gamePlayer.getSalvoes().stream().count() > opponent.getSalvoes().stream().count()){
+                    map.put("shoot", "false");
+                }else{
+                    map.put("shoot", "true");
+                }
+                map.put("turn", gamePlayer.salvoSet.stream().count() + 1);
                 map.put("hitsOnUser", getHits(gamePlayer));
             }
         } else {

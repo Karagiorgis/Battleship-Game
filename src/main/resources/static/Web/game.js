@@ -23,7 +23,7 @@ var app = new Vue({
     lengthShip: 0,
     turn: 1,
     sunked: 0,
-    post: "ready"
+    post: "ready",
   },
 
   created: function () {
@@ -47,6 +47,7 @@ var app = new Vue({
           app.info = json;
           app.getPlayers();
           app.gameStatus = app.info.gameStatus;
+          app.turn = app.info.turn;
           if (app.ships.length == 0) {
             app.ships = app.info.ships;
           }
@@ -249,7 +250,7 @@ var app = new Vue({
     },
 
     postSalvos() {
-      if (app.info.salvoes.length == app.oppSalvoes.length) {
+      if (app.info.shoot == "true") {
 
         let url = location.search.split('=')[1];
         let salvoes = [];
@@ -271,9 +272,10 @@ var app = new Vue({
             console.log(r)
             app.selectedSalvos = [];
             app.shots = 5;
-            app.turn += 1;
+            app.salvoError = "";
             app.post = 'posting';
             app.getData(url);
+
           })
           .catch(e => console.log(e))
       } else {
@@ -356,27 +358,23 @@ var app = new Vue({
       }
     },
 
-    //    getTurn: function () {
-    //      for (var i = 0; i < app.info.salvoes.length; i++) {
-    //        if(app.turn < app.info.salvoes[i].turn){
-    //        app.turn = app.info.salvoes[i].turn;
-    //        }
-    //      }
-    //
-    //    }
+    countdown: function (minutes) {
+      var seconds = 60;
+      var mins = 2;
 
-
-    //    getDataGame: function () {
-    //      let url = location.search.split('=')[1];
-    //      fetch("http://localhost:8080/api/game_view/" + url)
-    //        .then(response => response.json())
-    //        .then(json => {
-    //          app.gameInfo = json;
-    //        })
-    //        .catch(error => console.log("error", error))
-    //
-    //    },
-
+      function tick() {
+        var counter = document.getElementById("mycounter");
+        var current_minutes = mins - 1
+        seconds--;
+        counter.innerHTML = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+        if (seconds > 0) {
+          setTimeout(tick, 1000);
+        } else {
+          app.gameStatus = "game-over";
+        }
+      }
+      tick();
+    },
 
   }
 

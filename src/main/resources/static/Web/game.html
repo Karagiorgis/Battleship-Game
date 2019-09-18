@@ -13,10 +13,8 @@
 
     <div class="image">
 
-
-
       <div v-if="user.length != 0" class="game">
-        <div>
+        <div class="game-view-arrow">
           <img class="game-logo" src="images/arr1.png" alt="logo" @click="redirect()">
         </div>
         <div class="player-vs-player">
@@ -27,6 +25,11 @@
         </div>
       </div>
 
+      <div class="turn-box"><span v-if="gameStatus == 'start'">Turn : {{turn}}</span></div>
+      <div v-if="gameStatus == 'wait' && opponent.length != 0 && done == true" class="game-status">
+        <p>Waiting for other player to post ships...</p>
+      </div>
+      
       <div class="ships-box">
         <div class="wrapper-ship" v-if="done == false && gameStatus == 'wait' || opponent.length == 0">
           <div class="default-ships">
@@ -48,7 +51,6 @@
         </div>
 
         <div class="container">
-
           <div class="ship-grid">
             <h2>Ship locations</h2>
             <table id="table">
@@ -62,12 +64,11 @@
               </tr>
             </table>
           </div>
-          <div v-if="gameStatus == 'wait' && opponent.length != 0" class="game-status">
-            <p>Waiting for other player to post ships...</p>
-          </div>
+
           <div v-if="gameStatus == 'game-over' && opponent.length != 0" class="game-over">
             <p>Game over</p>
           </div>
+          <div id="mycounter" v-if="gameStatus == 'start'"></div>
           <div class="salvo-grid" v-if="gameStatus == 'start' && opponent.length != 0">
             <div class="salvo-body">
               <h2>Salvo locations</h2>
@@ -75,7 +76,6 @@
               <p class="shots">Shots left: {{shots}}</p>
               <p v-if="shots != 0" class="shoot-msg">Select grid to shoot</p>
               <p v-if="shots == 0" class="shoot-msg">Click fire to shoot</p>
-              <span>Turn : {{turn}}</span>
               <table id="table-salvoes" v-if="post == 'ready'">
                 <tr>
                   <td></td>
