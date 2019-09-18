@@ -67,7 +67,7 @@ public class SalvoController {
 
 
 }
-    Integer turn = 1;
+
 
     @RequestMapping(path="/games/players/{gamePlayer_id}/salvos", method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> postSalvos(@PathVariable long gamePlayer_id,
@@ -79,9 +79,8 @@ public class SalvoController {
             for (Salvo salvo: salvos){
 
                 salvo.setGamePlayer(gamePlayer);
-                salvo.setTurn(turn);
+                salvo.getTurn();
                 salvoRepository.save(salvo);
-                ++turn;
             }
 
             return new ResponseEntity<>(makeMap("Success", "Ships Created"),HttpStatus.CREATED);

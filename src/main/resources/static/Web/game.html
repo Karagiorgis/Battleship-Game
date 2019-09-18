@@ -30,18 +30,20 @@
       <div class="ships-box">
         <div class="wrapper-ship" v-if="done == false && gameStatus == 'wait' || opponent.length == 0">
           <div class="default-ships">
-            <div>
-              <input class="error-ship" v-if="shipPlaceError.length != 0" type="text" v-model="shipPlaceError">
-            </div>
+            <div class="ship-box">
+              <div>
+                <input class="error-ship" v-if="shipPlaceError.length != 0" type="text" v-model="shipPlaceError">
+              </div>
 
-            <div class="ships" v-for="(value,key) in gameShips">
-              <label for="ships">{{value.shipType}}</label>
-              <div class="label-dot"><input type="radio" :value="value" v-model="selectedShip" @click="shipPlaceError = 'Placing...'"></div>
-              <div class="rotate-box">
-                <img src="images/rotate.png" @click="rotateShip = !rotateShip" class="rotate">
-                <img src="images/minus.png" :value="value.shipType" class="minus" @click="removeShip()"></div>
+              <div class="ships" v-for="(value,key) in gameShips">
+                <label class="place-ships" for="ships">{{value.shipType}}</label>
+                <div class="label-dot"><input type="radio" :value="value" v-model="selectedShip" @click="shipPlaceError = 'Placing...'"></div>
+                <div class="rotate-box">
+                  <img src="images/rotate.png" @click="rotateShip = !rotateShip" class="rotate">
+                  <img src="images/minus.png" :value="value.shipType" class="minus" @click="removeShip()"></div>
+              </div>
+              <button id="submit" v-if="ships.length == 5" @click="postShips(), done = true">Done</button>
             </div>
-            <button id="submit" v-if="ships.length == 5" @click="postShips(), done = true">Done</button>
           </div>
         </div>
 
@@ -63,11 +65,16 @@
           <div v-if="gameStatus == 'wait' && opponent.length != 0" class="game-status">
             <p>Waiting for other player to post ships...</p>
           </div>
-
+          <div v-if="gameStatus == 'game-over' && opponent.length != 0" class="game-over">
+            <p>Game over</p>
+          </div>
           <div class="salvo-grid" v-if="gameStatus == 'start' && opponent.length != 0">
             <div class="salvo-body">
               <h2>Salvo locations</h2>
+              <input class="error-ship" v-if="salvoError.length != 0" type="text" v-model="salvoError">
               <p class="shots">Shots left: {{shots}}</p>
+              <p v-if="shots != 0" class="shoot-msg">Select grid to shoot</p>
+              <p v-if="shots == 0" class="shoot-msg">Click fire to shoot</p>
               <span>Turn : {{turn}}</span>
               <table id="table-salvoes" v-if="post == 'ready'">
                 <tr>
@@ -80,7 +87,7 @@
                 </tr>
               </table>
               <div class="shoot" v-else>shooting...</div>
-              <button v-if="selectedSalvos.length == 5 && shots == 0" id="postSalvos" @click="postSalvos(), turn += 1, shots = 5">Fire!</button>
+              <button v-if="selectedSalvos.length == 5 && shots == 0" id="postSalvos" @click="postSalvos()">Fire!</button>
             </div>
           </div>
         </div>

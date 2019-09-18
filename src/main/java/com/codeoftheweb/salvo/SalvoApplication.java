@@ -107,27 +107,27 @@ public class SalvoApplication {
 //			GamePlayer gamePlayer6 = new GamePlayer(player2,game3);
 //			gamePlayerRepository.save(gamePlayer6);
 //
-			Ship ship1 = new Ship("Aircraft-Carrier", Arrays.asList("H2", "H3", "H4", "H5", "H6"),gamePlayer1);
-			shipRepository.save(ship1);
-			Ship ship2 = new Ship("Battleship", Arrays.asList("A10", "B10", "C10", "D10"),gamePlayer1);
-			shipRepository.save(ship2);
-			Ship ship3 = new Ship("Submarine", Arrays.asList("D1", "D2", "D3"),gamePlayer1);
-			shipRepository.save(ship3);
-			Ship ship4 = new Ship("Destroyer", Arrays.asList("J2", "J3", "J4"),gamePlayer1);
-			shipRepository.save(ship4);
-			Ship ship5 = new Ship("Patrol-Boat", Arrays.asList("J7", "J8"),gamePlayer1);
-			shipRepository.save(ship5);
-
-			Ship ship6 = new Ship("Aircraft-Carrier", Arrays.asList("H2", "H3", "H4", "H5", "H6"),gamePlayer2);
-			shipRepository.save(ship6);
-			Ship ship7 = new Ship("Battleship", Arrays.asList("A10", "B10", "C10", "D10"),gamePlayer2);
-			shipRepository.save(ship7);
-			Ship ship8 = new Ship("Submarine", Arrays.asList("D1", "D2", "D3"),gamePlayer2);
-			shipRepository.save(ship8);
-			Ship ship9 = new Ship("Destroyer", Arrays.asList("J2", "J3", "J4"),gamePlayer2);
-			shipRepository.save(ship9);
-			Ship ship10 = new Ship("Patrol-Boat", Arrays.asList("J7", "J8"),gamePlayer2);
-			shipRepository.save(ship10);
+//			Ship ship1 = new Ship("Aircraft-Carrier", Arrays.asList("H2", "H3", "H4", "H5", "H6"),gamePlayer1);
+//			shipRepository.save(ship1);
+//			Ship ship2 = new Ship("Battleship", Arrays.asList("A10", "B10", "C10", "D10"),gamePlayer1);
+//			shipRepository.save(ship2);
+//			Ship ship3 = new Ship("Submarine", Arrays.asList("D1", "D2", "D3"),gamePlayer1);
+//			shipRepository.save(ship3);
+//			Ship ship4 = new Ship("Destroyer", Arrays.asList("J2", "J3", "J4"),gamePlayer1);
+//			shipRepository.save(ship4);
+//			Ship ship5 = new Ship("Patrol-Boat", Arrays.asList("J7", "J8"),gamePlayer1);
+//			shipRepository.save(ship5);
+//
+//			Ship ship6 = new Ship("Aircraft-Carrier", Arrays.asList("H2", "H3", "H4", "H5", "H6"),gamePlayer2);
+//			shipRepository.save(ship6);
+//			Ship ship7 = new Ship("Battleship", Arrays.asList("A10", "B10", "C10", "D10"),gamePlayer2);
+//			shipRepository.save(ship7);
+//			Ship ship8 = new Ship("Submarine", Arrays.asList("D1", "D2", "D3"),gamePlayer2);
+//			shipRepository.save(ship8);
+//			Ship ship9 = new Ship("Destroyer", Arrays.asList("J2", "J3", "J4"),gamePlayer2);
+//			shipRepository.save(ship9);
+//			Ship ship10 = new Ship("Patrol-Boat", Arrays.asList("J7", "J8"),gamePlayer2);
+//			shipRepository.save(ship10);
 //
 //			Salvo salvo1 = new Salvo(gamePlayer1, 1, Arrays.asList("H2", "H3", "H4"));
 //			salvoRepository.save(salvo1);

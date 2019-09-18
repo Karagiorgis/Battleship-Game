@@ -18,6 +18,7 @@ var app = new Vue({
     shots: 5,
     done: false,
     shipPlaceError: "",
+    salvoError: "",
     salvoHits: [],
     lengthShip: 0,
     turn: 1,
@@ -187,6 +188,12 @@ var app = new Vue({
         })
 
         app.selectedShip.length = 0;
+        let type = document.getElementsByClassName("place-ships");
+        for (let i = 0; i < type.length; i++) {
+          if (app.selectedShip.shipType == type[i].innerHTML) {
+            type[i].style.color = "#3adc32";
+          }
+        }
         app.shipPlaceError = "Ship is placed *";
 
       } else {
@@ -214,7 +221,8 @@ var app = new Vue({
             })
           }
         } else {
-          console.log("cannot place ship here")
+          app.salvoError = "cannot place salvo here";
+          app.shots += 1;
         }
       } else {
         app.shipPlaceError = "please place all ships *";
@@ -241,29 +249,38 @@ var app = new Vue({
     },
 
     postSalvos() {
-      
-      let url = location.search.split('=')[1];
-      let salvoes = [];
-      salvoes.push({"salvoLocations": app.selectedSalvos})
-      
-      fetch("http://localhost:8080/api/games/players/" + url + "/salvos", {
-          credentials: 'include',
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(salvoes),
-        })
-        .then(r => {
-          console.log(r)
-          app.selectedSalvos = [];
-          app.shots = 5;
-          app.post = 'posting';
-          app.getData(url);
-        })
-        .catch(e => console.log(e))
+      if (app.info.salvoes.length == app.oppSalvoes.length) {
 
+        let url = location.search.split('=')[1];
+        let salvoes = [];
+        salvoes.push({
+          "salvoLocations": app.selectedSalvos,
+          "turn": app.turn
+        })
+
+        fetch("http://localhost:8080/api/games/players/" + url + "/salvos", {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(salvoes),
+          })
+          .then(r => {
+            console.log(r)
+            app.selectedSalvos = [];
+            app.shots = 5;
+            app.turn += 1;
+            app.post = 'posting';
+            app.getData(url);
+          })
+          .catch(e => console.log(e))
+      } else {
+        app.shots = 0;
+        app.salvoError = "waiting for opponent*";
+
+      }
     },
 
 
@@ -308,27 +325,37 @@ var app = new Vue({
         if (app.selectedShip.shipType == app.ships[i].shipType) {
           app.selectedShip.length = app.ships[i].length;
           app.ships.splice(i, 1);
+          let type = document.getElementsByClassName("place-ships");
+          for (let i = 0; i < type.length; i++) {
+            if (app.selectedShip.shipType == type[i].innerHTML) {
+              type[i].style.color = "black";
+            }
+          }
         }
       }
 
     },
 
     printSunk: function () {
-
-      for (var i = 0; i < app.ships.length; i++) {
-        if (app.ships[i].sunk == "true") {
-          var table = document.getElementById("table");
-          var td = table.getElementsByTagName("td");
-          for (var j = 0; j < td.length; j++) {
-            let name = td[j].className.split(" ").splice(1, 1);
-            if (app.ships[i].shipType == name) {
-              td[j].className = "sunk";
+      if (app.sunked != 17) {
+        for (var i = 0; i < app.ships.length; i++) {
+          if (app.ships[i].sunk == "true") {
+            var table = document.getElementById("table");
+            var td = table.getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+              let name = td[j].className.split(" ").splice(1, 1);
+              if (app.ships[i].shipType == name) {
+                td[j].className = "sunk";
+                app.sunked += 1;
+              }
             }
           }
         }
+      } else {
+        app.gameStatus = "game-over";
       }
     },
-    
+
     //    getTurn: function () {
     //      for (var i = 0; i < app.info.salvoes.length; i++) {
     //        if(app.turn < app.info.salvoes[i].turn){
