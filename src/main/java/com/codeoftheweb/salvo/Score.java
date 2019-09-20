@@ -3,7 +3,7 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
 public class Score {
@@ -25,14 +25,7 @@ public class Score {
     @JoinColumn(name="game_id")
     private Game game;
 
-    public Score(){}
-
-    public Score(String creationDate, double score, Player player, Game game) {
-        this.creationDate = creationDate;
-        this.score = score;
-        this.player = player;
-        this.game = game;
-    }
+    public Score(String creationDate, double score, GamePlayer gamePlayer, Game game){}
 
     public long getId() {
         return id;
@@ -54,7 +47,7 @@ public class Score {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 

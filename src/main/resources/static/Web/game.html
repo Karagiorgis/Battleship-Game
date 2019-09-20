@@ -65,10 +65,12 @@
             </table>
           </div>
 
-          <div v-if="gameStatus == 'game-over' && opponent.length != 0" class="game-over">
+          <div v-if="gameEnd == true && opponent.length != 0" class="game-over">
             <p>Game over</p>
           </div>
-          <div id="mycounter" v-if="gameStatus == 'start'"></div>
+          
+          <div id="mycounter" v-if="gameStatus == 'start' && gameEnd == false">Time left: {{time}}</div>
+          
           <div class="salvo-grid" v-if="gameStatus == 'start' && opponent.length != 0">
             <div class="salvo-body">
               <h2>Salvo locations</h2>

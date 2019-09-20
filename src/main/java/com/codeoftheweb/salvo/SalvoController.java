@@ -173,6 +173,7 @@ public class SalvoController {
                 }
                 map.put("turn", gamePlayer.salvoSet.stream().count() + 1);
                 map.put("hitsOnUser", getHits(gamePlayer));
+
             }
         } else {
             map.put("Error", "Not an existing game");

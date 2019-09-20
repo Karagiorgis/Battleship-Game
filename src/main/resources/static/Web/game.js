@@ -24,6 +24,10 @@ var app = new Vue({
     turn: 1,
     sunked: 0,
     post: "ready",
+    timer: 1,
+    time: "",
+    gameEnd: false,
+    state: "run"
   },
 
   created: function () {
@@ -35,7 +39,10 @@ var app = new Vue({
     refresh: function () {
       setInterval(function () {
         app.getData(location.search.split('=')[1]);
-        app.post = 'ready';
+        if (app.timer == 1 && app.gameStatus == "start") {
+          app.countdown();
+          app.timer = 0;
+        }
       }, 2000);
     },
 
@@ -46,6 +53,7 @@ var app = new Vue({
         .then(json => {
           app.info = json;
           app.getPlayers();
+          app.post = 'ready';
           app.gameStatus = app.info.gameStatus;
           app.turn = app.info.turn;
           if (app.ships.length == 0) {
@@ -54,7 +62,7 @@ var app = new Vue({
           if (app.gameShips.length == 0) {
             this.createDefaultShips();
           }
-          if (app.info.salvoes.length != 0) {
+          if (app.info.salvoes.length != 0 || app.info.salvoesOpponent.length != 0) {
             app.oppSalvoes = app.info.salvoesOpponent;
             app.salvoHits = app.info.hitsOnUser;
             app.salvoes = app.info.salvoes;
@@ -275,13 +283,15 @@ var app = new Vue({
             app.salvoError = "";
             app.post = 'posting';
             app.getData(url);
-
+            app.state = "stop";
+            app.time = "1:00";
           })
           .catch(e => console.log(e))
       } else {
         app.shots = 0;
         app.salvoError = "waiting for opponent*";
-
+        app.state = "stop";
+        app.time = "1:00";
       }
     },
 
@@ -354,27 +364,37 @@ var app = new Vue({
           }
         }
       } else {
-        app.gameStatus = "game-over";
+        app.gameEnd = true;
       }
     },
 
-    countdown: function (minutes) {
+    countdown: function () {
+
       var seconds = 60;
-      var mins = 2;
+      var mins = 1;
 
       function tick() {
-        var counter = document.getElementById("mycounter");
-        var current_minutes = mins - 1
-        seconds--;
-        counter.innerHTML = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
-        if (seconds > 0) {
-          setTimeout(tick, 1000);
+        if (app.state == "run") {
+          var current_minutes = mins - 1;
+          seconds--;
+          app.time = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+          if (seconds > 0) {
+            setTimeout(tick, 1000);
+          } else {
+            clearTimeout(tick);
+            app.gameEnd = true;
+          }
         } else {
-          app.gameStatus = "game-over";
+          clearTimeout(tick);
         }
       }
       tick();
+
     },
+
+
+
+
 
   }
 
